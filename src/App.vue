@@ -1,8 +1,14 @@
 <template>
 <div>
-	<div class="post">
-		<div><strong>Name:</strong>About JavaScript</div>
-		<div><strong>Description:</strong>JavaScript is it best</div>
+	<form>
+		<h4>Create post</h4>
+		<input class="input" type="text" placeholder="Name">
+		<input class="input" type="text" placeholder="Description">
+		<button>Add</button>
+	</form>
+	<div class="post" v-for="post in posts" :key="post.id">
+		<div><strong>Name:</strong>{{ post.title }}</div>
+		<div><strong>Description:</strong>{{ post.body }}</div>
 	</div>
 </div>
 </template>
@@ -11,17 +17,15 @@
 export default {
 	data() {
 		return {
-			likes: 0,
-			dislikes: 0,
+			posts: [
+				{id: 1, title: "HTML", body: "Description HTML"},
+				{id: 2, title: "CSS", body: "Description CSS"},
+				{id: 3, title: "JS", body: "Description JS"}
+			]
 		}
 	},
 	methods: {
-		addLike() {
-			this.likes += 1;
-		},
-		addDislike() {
-			this.dislikes +=1;
-		}
+		
 	}
 }
 </script>
@@ -36,5 +40,13 @@ export default {
 .post {
 	padding: 15px;
 	border: 2px solid teal;
+	margin-top: 15px;
+}
+
+.input {
+	width: 100%;
+	border: 1px solid teal;
+	padding: 10px 15px;
+	margin-top: 15px;
 }
 </style>
