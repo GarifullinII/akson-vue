@@ -3,6 +3,7 @@
 	<h2>
 		Page with posts
 	</h2>
+
 	<it-button
 		@click='showDialog'
 		style='margin: 15px 0'
@@ -13,9 +14,10 @@
 	<it-dialog
 		v-model:show='dialogVisible'
 	>
-		<post-form
-			@create='createPost'
-		/>
+
+	<post-form
+		@create='createPost'
+	/>
 	</it-dialog>
 
 	<post-list 
@@ -29,6 +31,7 @@
 import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
 import ItButton from './components/UI/ItButton.vue';
+import axios from 'axios';
 export default {
 	components: {
 		PostForm, PostList,
@@ -41,7 +44,7 @@ ItButton
 				{id: 2, title: 'CSS', body: 'Description CSS'},
 				{id: 3, title: 'JS', body: 'Description JS'}
 			],
-			dialogVisible: false, 
+			dialogVisible: false,
 		}
 	},
 	methods: {
@@ -54,6 +57,14 @@ ItButton
 		},
 		showDialog() {
 			this.dialogVisible = true;
+		},
+		async fetchUsers() {
+			try {
+				const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+				console.log(response);
+			} catch(error) {
+				alert('Error, try again later')
+			}
 		}
 	}
 }
