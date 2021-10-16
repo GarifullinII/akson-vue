@@ -1,6 +1,8 @@
 <template>
 	<form @submit.prevent>
-		<h4>Create post</h4>
+		<h3>
+			Create post
+		</h3>
 		<it-input 
 			v-model='post.title'
 			type='text' 
@@ -16,7 +18,7 @@
 			@click='createPost'
 			style='margin-top: 15px'
 		>
-			Add
+			Add post
 		</it-button>
 	</form>
 </template>
