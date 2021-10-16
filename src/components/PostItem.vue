@@ -4,22 +4,24 @@
 			<div><strong>Name:</strong>{{ post.title }}</div>
 			<div><strong>Description:</strong>{{ post.body }}</div>
 		</div>
-		<div class="post__btn">
-			<button>
+		<div class='post__btn'>
+			<it-button>
 				Delete
-			</button>
+			</it-button>
 		</div>
 	</div>
 </template>
 
 <script>
+import ItButton from './UI/ItButton.vue'
 export default {
-	props: {
-		post: {
-			type: Object,
-			required: true,
-		}
+components: { ItButton },
+props: {
+	post: {
+		type: Object,
+		required: true,
 	}
+}
 }
 </script>
 

@@ -12,36 +12,38 @@
 			class='input' type='text' 
 			placeholder='Description'
 		>
-		<button 
+		<it-button
 			class='btn'
 			@click='createPost'
 		>
 			Add
-		</button>
+		</it-button>
 	</form>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				post: {
-					title: '',
-					body: ''
-				}
+import ItButton from './UI/ItButton.vue';
+export default {
+components: { ItButton },
+	data() {
+		return {
+			post: {
+				title: '',
+				body: ''
 			}
-		},
-		methods: {
-			createPost() {
-			this.post.id = Date.now();
-			this.$emit('create', this.post)
-			this.post = {
-					title: '',
-					body: ''
-				}
+		}
+	},
+	methods: {
+		createPost() {
+		this.post.id = Date.now();
+		this.$emit('create', this.post)
+		this.post = {
+				title: '',
+				body: ''
 			}
 		}
 	}
+}
 </script>
 
 <style scoped>
@@ -55,14 +57,5 @@ form {
 	border: 1px solid teal;
 	padding: 10px 15px;
 	margin-top: 15px;
-}
-
-.btn {
-	margin-top: 15px;
-	align-self: flex-end;
-	padding: 10px 15px;
-	color: teal;
-	border: 1px solid teal;
-	border-radius: 10px;
 }
 </style>
