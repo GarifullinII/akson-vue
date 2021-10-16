@@ -5,5 +5,5 @@ import ItDialog from './ItDialog.vue';
 export default [
 	ItButton,
 	ItInput,
-	ItDialog
+	ItDialog,
 ]
