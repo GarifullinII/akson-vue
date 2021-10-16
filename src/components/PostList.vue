@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if='posts.length > 0'>
 		<h3>
 			Users list
 		</h3>
@@ -10,6 +10,9 @@
 			@remove="$emit('remove', post)"
 		/>
 	</div>
+	<h3 v-else style='color: red'>
+		User list is umpty
+	</h3>
 </template>
 
 <script>
