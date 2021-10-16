@@ -11,7 +11,7 @@
 		/>
 	</div>
 	<h3 v-else style='color: red'>
-		User list is umpty
+		Posts list is umpty
 	</h3>
 </template>
 

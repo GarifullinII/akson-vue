@@ -23,7 +23,11 @@
 	<post-list 
 		:posts='posts'
 		@remove='removePost'
+		v-if='!isPostsLoading'
 	/>
+	<div v-else>
+		loading in progress...
+	</div>
 </div>
 </template>
 
@@ -39,12 +43,9 @@ ItButton
 	},
 	data() {
 		return {
-			posts: [
-				{id: 1, title: 'HTML', body: 'Description HTML'},
-				{id: 2, title: 'CSS', body: 'Description CSS'},
-				{id: 3, title: 'JS', body: 'Description JS'}
-			],
+			posts: [],
 			dialogVisible: false,
+			isPostsLoading: false
 		}
 	},
 	methods: {
@@ -58,14 +59,20 @@ ItButton
 		showDialog() {
 			this.dialogVisible = true;
 		},
-		async fetchUsers() {
+		async fetchPosts() {
 			try {
-				const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-				console.log(response);
+				this.isPostsLoading = true;
+					const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+					this.posts = response.data;
 			} catch(error) {
 				alert('Error, try again later')
+			} finally {
+				this.isPostsLoading = false;
 			}
 		}
+	},
+	mounted() {
+		this.fetchPosts();
 	}
 }
 </script>
