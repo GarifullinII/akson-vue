@@ -6,13 +6,12 @@
 
 <script>
 export default {
-
+	name: 'it-button'
 }
 </script>
 
 <style scoped>
 .btn {
-	margin-top: 15px;
 	align-self: flex-end;
 	padding: 10px 15px;
 	color: teal;

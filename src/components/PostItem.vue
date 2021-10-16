@@ -13,9 +13,7 @@
 </template>
 
 <script>
-import ItButton from './UI/ItButton.vue'
 export default {
-components: { ItButton },
 props: {
 	post: {
 		type: Object,
