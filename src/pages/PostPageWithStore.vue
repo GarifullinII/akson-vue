@@ -1,0 +1,148 @@
+<template>
+  <div>
+    <h2>
+      Page with posts
+    </h2>
+    <it-input
+        :model-value='searchQuery'
+        @update:model-value='setSearchQuery'
+        placeholder='Search...'
+    />
+    <div class='app__btns'>
+      <it-button
+          @click='showDialog'
+          style='margin: 15px 0'
+      >
+        Create post
+      </it-button>
+      <it-select
+          :model-value='selectedSort'
+          @update:model-value='setSelectedSort'
+          :options='sortOptions'
+      />
+    </div>
+    <it-dialog
+        v-model:show='dialogVisible'
+    >
+      <post-form
+          @create='createPost'
+      />
+    </it-dialog>
+    <post-list
+        :posts='sortedAndSearchedPosts'
+        @remove='removePost'
+        v-if='!isPostsLoading'
+    />
+    <div v-else>
+      loading in progress...
+    </div>
+  <div v-intersection='loadMorePosts' class='observer'>
+
+  </div>
+      <div class="page__wrapper">
+        <div
+            v-for='pageNumber in totalPages'
+            :key='pageNumber'
+            class='page'
+            :class='{
+              "current-page": page === pageNumber
+            }'
+            @click='changePage(pageNumber)'
+        >
+          {{ pageNumber }}
+        </div>
+      </div>
+  </div>
+</template>
+
+<script>
+import PostForm from '../../src/components/PostForm';
+import PostList from '../../src/components/PostList.vue';
+import ItButton from '../../src/components/UI/ItButton.vue';
+import axios from 'axios';
+import ItSelect from "../../src/components/UI/ItSelect";
+import ItInput from "../../src/components/UI/ItInput";
+import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
+
+export default {
+  components: {
+    ItInput,
+    ItSelect,
+    PostForm, PostList,
+    ItButton
+  },
+  data() {
+    return {
+      dialogVisible: false,
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setPage: 'post/setPage',
+      setSearchQuery: 'post/setSearchQuery',
+      setSelectedSort: 'post/setSelectedSort',
+    }),
+    ...mapActions({
+      loadMorePosts: 'post/loadMorePosts',
+      fetchPosts: 'post/fetchPosts',
+    }),
+    createPost(post) {
+      this.posts.push(post);
+      this.dialogVisible = false;
+    },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  computed: {
+    ...mapState({
+      posts: state => state.post.posts,
+      isPostsLoading: state => state.post.isPostsLoading,
+      selectedSort: state => state.post.selectedSort,
+      searchQuery: state => state.post.searchQuery,
+      page: state => state.post.page,
+      limit: state => state.post.limit,
+      totalPages: state => state.post.totalPages,
+      sortOptions: state => state.post.sortOptions,
+    }),
+    ...mapGetters({
+      sortedPosts: 'post/sortedPosts',
+      sortedAndSearchedPosts: 'post/sortedAndSearchedPosts',
+    })
+  },
+  watch: {},
+}
+</script>
+
+<style>
+.app__btns {
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.page {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.current-page {
+  border: 2px solid teal;
+}
+
+.observer {
+  height: 30px;
+  background: green;
+}
+</style>

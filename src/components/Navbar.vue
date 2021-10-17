@@ -9,6 +9,11 @@
       >
         Posts
       </it-button>
+      <it-button
+          @click='$router.push("/store")'
+      >
+        Store
+      </it-button>
     </div>
   </div>
 </template>
