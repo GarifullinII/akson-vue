@@ -3,7 +3,7 @@
 		<h3>
 			Create post
 		</h3>
-		<it-input 
+		<it-input
 			v-model='post.title'
 			type='text' 
 			placeholder='Name'
