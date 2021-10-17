@@ -1,34 +1,42 @@
 <template>
-<div class='app'>
-	<h2>
-		Page with posts
-	</h2>
+  <div class='app'>
 
-	<it-button
-		@click='showDialog'
-		style='margin: 15px 0'
-	>
-		Create post
-	</it-button>
+    <h2>
+      Page with posts
+    </h2>
 
-	<it-dialog
-		v-model:show='dialogVisible'
-	>
+    <div class='app__btns'>
+      <it-button
+          @click='showDialog'
+          style='margin: 15px 0'
+      >
+        Create post
+      </it-button>
 
-	<post-form
-		@create='createPost'
-	/>
-	</it-dialog>
+      <it-select
+          v-model='selectedSort'
+          :options='sortOptions'
+      />
+    </div>
 
-	<post-list 
-		:posts='posts'
-		@remove='removePost'
-		v-if='!isPostsLoading'
-	/>
-	<div v-else>
-		loading in progress...
-	</div>
-</div>
+    <it-dialog
+      v-model:show='dialogVisible'
+    >
+    <post-form
+      @create='createPost'
+    />
+    </it-dialog>
+
+    <post-list
+      :posts='sortedPosts'
+      @remove='removePost'
+      v-if='!isPostsLoading'
+    />
+
+    <div v-else>
+      loading in progress...
+    </div>
+  </div>
 </template>
 
 <script>
@@ -36,8 +44,10 @@ import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
 import ItButton from './components/UI/ItButton.vue';
 import axios from 'axios';
+import ItSelect from "./components/UI/ItSelect";
 export default {
 	components: {
+    ItSelect,
 		PostForm, PostList,
 ItButton
 	},
@@ -45,7 +55,12 @@ ItButton
 		return {
 			posts: [],
 			dialogVisible: false,
-			isPostsLoading: false
+			isPostsLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'by name' },
+        {value: 'body', name: 'by description' },
+      ]
 		}
 	},
 	methods: {
@@ -73,7 +88,15 @@ ItButton
 	},
 	mounted() {
 		this.fetchPosts();
-	}
+	},
+  computed: {
+	  sortedPosts() {
+	    return [...this.posts].sort((post1, post2) => {
+        return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+      })
+    }
+  },
+  watch: {},
 }
 </script>
 
@@ -83,7 +106,14 @@ ItButton
 	padding: 0;
 	box-sizing: border-box;
 }
+
 .app {
 	padding: 20px;
+}
+
+.app__btns {
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
