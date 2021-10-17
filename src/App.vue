@@ -34,19 +34,22 @@
     <div v-else>
       loading in progress...
     </div>
-    <div class="page__wrapper">
-      <div
-          v-for='pageNumber in totalPages'
-          :key='pageNumber'
-          class='page'
-          :class='{
-            "current-page": page === pageNumber
-          }'
-          @click='changePage(pageNumber)'
-      >
-        {{ pageNumber }}
-      </div>
+    <div ref='observer' class='observer'>
+
     </div>
+<!--    <div class="page__wrapper">-->
+<!--      <div-->
+<!--          v-for='pageNumber in totalPages'-->
+<!--          :key='pageNumber'-->
+<!--          class='page'-->
+<!--          :class='{-->
+<!--            "current-page": page === pageNumber-->
+<!--          }'-->
+<!--          @click='changePage(pageNumber)'-->
+<!--      >-->
+<!--        {{ pageNumber }}-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -91,10 +94,10 @@ ItButton
 		showDialog() {
 			this.dialogVisible = true;
 		},
-    changePage(pageNumber) {
-		  this.page = pageNumber
-      this.fetchPosts()
-    },
+    // changePage(pageNumber) {
+		//   this.page = pageNumber
+    //   this.fetchPosts()
+    // },
 		async fetchPosts() {
 			try {
 				this.isPostsLoading = true;
@@ -111,10 +114,36 @@ ItButton
 			} finally {
 				this.isPostsLoading = false;
 			}
-		}
+		},
+    async loadMorePosts() {
+      try {
+        this.page += 1;
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+          params: {
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
+        this.posts = [...this.posts, ...response.data];
+      } catch(error) {
+        alert('Error, try again later')
+      }
+    }
 	},
 	mounted() {
 		this.fetchPosts();
+		const options = {
+		  rootMargin: '0px',
+      threshold: 1.0
+    }
+    const callback = (entries, observer) => {
+		  if(entries[0].isIntersecting && this.page < this.totalPages) {
+		    this.loadMorePosts()
+      }
+    }
+    const observer = new IntersectionObserver(callback, options);
+		observer.observe(this.$refs.observer);
 	},
   computed: {
 	  sortedPosts() {
@@ -159,5 +188,10 @@ ItButton
 
 .current-page {
   border: 2px solid teal;
+}
+
+.observer {
+  height: 30px;
+  background: green;
 }
 </style>
