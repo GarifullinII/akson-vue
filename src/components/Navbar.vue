@@ -14,6 +14,11 @@
       >
         Store
       </it-button>
+      <it-button
+          @click='$router.push("/composition")'
+      >
+        Composition
+      </it-button>
     </div>
   </div>
 </template>
