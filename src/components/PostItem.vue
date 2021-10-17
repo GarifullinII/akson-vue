@@ -1,8 +1,17 @@
 <template>
 	<div class='post'>
 		<div>
-			<div><strong>Name:</strong>{{ post.title }}</div>
-			<div><strong>Description:</strong>{{ post.body }}</div>
+      <div>
+        {{post.id}}
+      </div>
+			<div>
+        <strong>Name:</strong>
+        {{ post.title }}
+      </div>
+			<div>
+        <strong>Description:</strong>
+        {{ post.body }}
+      </div>
 		</div>
 		<div class='post__btn'>
 			<it-button
