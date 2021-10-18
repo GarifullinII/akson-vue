@@ -1,5 +1,7 @@
 # akson-vue
 
+![til](./src/video.gif)
+
 ## Project setup
 ```
 yarn install
