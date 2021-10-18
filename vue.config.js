@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: 'akson-vue'
+    publicPath: '/akson-vue/'
 }
